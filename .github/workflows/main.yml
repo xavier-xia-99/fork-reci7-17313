@@ -16,12 +16,27 @@ jobs:
       - name: Install pipenv
         run: |
           python -m pip install --upgrade pipenv wheel
+
       - name: Install dependencies
         run: |
           pipenv install --deploy --dev
+          pipenv install --dev black
+
       - name: Move to flask folder
         run: |
           cd app
       - name: Run test suite
         run: |
           pipenv run pytest
+
+  format:
+    name: Format Code Using Black
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Run Black Formatter
+        uses: rickstaa/action-black@v1.3.1
+        with:
+          black_args: "."  # This will format the code
